@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            
+            <attribute-definition attribute-id="queueItCustomerId">
+                <display-name xml:lang="x-default">Queue It Customer ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="queueItSecretKey">
+                <display-name xml:lang="x-default">Queue It Secret Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="queueItEnabled">
+                <display-name xml:lang="x-default">Queue It Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+
+        </custom-attribute-definitions>
+        <group-definitions>
+            
+            <attribute-group group-id="QueueIt">
+                <display-name xml:lang="x-default">Queue It Data</display-name>
+                <attribute attribute-id="queueItEnabled"/>
+                <attribute attribute-id="queueItSecretKey"/>
+                <attribute attribute-id="queueItCustomerId"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <custom-type type-id="queueit">
+        <staging-mode>no-staging</staging-mode>
+        <storage-scope>site</storage-scope>
+        <retention-days>365</retention-days>
+        <key-definition attribute-id="id">
+            <type>string</type>
+            <min-length>0</min-length>
+        </key-definition>
+        <attribute-definitions>
+            <attribute-definition attribute-id="queueitdata">
+                <display-name xml:lang="x-default">Queue It Data</display-name>
+                <description xml:lang="x-default">From the Go Platform, use the go.queue-it.net/integration/overview to download the json. Use this field to store the json data.</description>
+                <type>string</type>
+                <localizable-flag>false</localizable-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="QueueItDataEntry">
+                <display-name xml:lang="x-default">Queue It Data Entry</display-name>
+                <attribute attribute-id="id"/>
+                <attribute attribute-id="queueitdata"/>
+            </attribute-group>
+        </group-definitions>
+    </custom-type>
+
+</metadata>
