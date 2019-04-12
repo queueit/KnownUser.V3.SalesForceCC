@@ -1,0 +1,37 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<iscomment>
+
+This template is intentionally empty.
+
+
+The purpose is as a place holder for a template, with the same name 'higher up' in the cartridge path.
+
+pt_xxx_UI.isml is 'injected' into pt_xxx.isml, in the <head> element, to enable custom cartridges to add script and css dependencies,
+
+pt_xxx_VARS.isml is 'injected' into pt_xxx.isml, after the footer element (within the <body>, but near the end), for adding <script> elements that are only loaded after the markup is itself loaded.
+
+
+NOTE: this is to inject client side ajax handling into the PDP template. This may need to be injected into other areas of the site, as needed for ajax calls for add to cart. 
+
+</iscomment>
+<isscript>
+	var sitePrefs = require('dw/system/Site').getCurrent().getPreferences();
+	var queueItConfigs = 'queueItEnabled' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItEnabled"] ? sitePrefs.getCustom()["queueItEnabled"] : null;
+	var customerId = '';
+	if ('queueItCustomerId' in sitePrefs.getCustom()) {
+		customerId = sitePrefs.getCustom()["queueItCustomerId"]; // Your Queue-it customer ID
+	}
+</isscript>
+
+<isif condition="${queueItConfigs}"> 
+	<script type="text/javascript" src="//static.queue-it.net/script/queueclient.min.js"></script>
+	<script
+	 data-queueit-intercept-domain="${request.httpHost}"
+	   data-queueit-intercept="true"
+	  data-queueit-c="${customerId}"
+	  type="text/javascript"
+	  data-queueit-ku-redirect-headername="X-SF-CC-QUEUEIT"
+	  src="//static.queue-it.net/script/queueconfigloader.min.js">
+	</script>
+
+</isif> 

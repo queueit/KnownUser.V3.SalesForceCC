@@ -4,6 +4,8 @@
  * Implements generic httpContextProvider consumed by queueit sdk library
  * 
  */
+var StringUtils = require('dw/util/StringUtils');
+
 
 exports.httpContextProvider = function() {
     return {
@@ -34,7 +36,9 @@ exports.httpContextProvider = function() {
 					
         			if (cookieKey in cookies)
         			{
-        				return cookies[cookieKey];
+        				var cookie =cookies[cookieKey]; 
+        				var cookieVal = decodeURIComponent(cookie.value); 
+        				return cookieVal;
         			}
         			else { 
         				return '';

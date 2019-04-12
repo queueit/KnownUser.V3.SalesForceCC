@@ -5,12 +5,12 @@
  * @module controllers/Page
  */
 
-
 /* @modules */
 //var QueueIT = require('./queueit_knownuserv3_sdk.js')
 var objMgr = require('dw/object/CustomObjectMgr');
 var sitePrefs = require('dw/system/Site').getCurrent().getPreferences();
 var httpCtx = require('./httpContextProvider.js');
+var URLUtils = require('dw/web/URLUtils');
 
 const QueueIT = require("./queueit_knownuserv3_sdk.js"); 
 
@@ -80,21 +80,40 @@ exports.Start = function() {
 				if (!request.httpParameterMap.get(knownUser.QueueITTokenKey).empty) { 
 					queueitToken = request.httpParameterMap.get(knownUser.QueueITTokenKey).stringValue;
 				}
+				configureKnownUserHashing();
+				 
 				var validationResult = knownUser.validateRequestByIntegrationConfig( 
 					      requestUrlWithoutToken, queueitToken, integrationsConfigString,
 					      customerId, secretKey, prov);
 			
 				if (validationResult.doRedirect()) {
-					
-					var location = validationResult.redirectUrl; 
-					// redirect
-					response.redirect(location);
-					
-					
-					
-					return;
+
+					// handle ajax
+					if (validationResult.isAjaxResult) {
+						// need to set the header and send back success
+						session.custom.ajaxredirecturl = validationResult.getAjaxRedirectUrl();
+						var location2 = URLUtils.https('QueueItJson-Show');
+						response.redirect(location2);
+						return;
+						
+					}
+					else 
+					{
+						var location = validationResult.redirectUrl; 
+						// redirect
+						response.redirect(location);
+						return;
+						
+					}
 				}
-				
+				else 
+				{
+					if (requestUrl.toString() !== requestUrlWithoutToken && validationResult.actionType) {
+				        resonse.redirect(requestUrlWithoutToken);
+				    } else {
+				    	return;
+				    }					
+				}
 			}
 			
 		}
@@ -107,4 +126,17 @@ exports.Start = function() {
 	}
 
 }
+
+function configureKnownUserHashing() {
+    var utils = QueueIT.KnownUserV3.SDK.Utils;
+    utils.generateSHA256Hash = function (secretKey, stringToHash) {
+      const mac1 = require('dw/crypto/Mac');
+      var mac = mac1(mac1.HMAC_SHA_256);
+      const hash = mac.digest(stringToHash, secretKey);
+      const enc = require('dw/crypto/Encoding');
+      const hashHex = enc.toHex(hash);
+      return hashHex;
+    };
+}
+
 

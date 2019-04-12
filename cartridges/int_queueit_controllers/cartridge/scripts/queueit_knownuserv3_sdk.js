@@ -598,6 +598,7 @@ var QueueIT;
                         return true;
                     }
                     catch (_a) {
+                    	var ll = _a;
                         return false;
                     }
                 };
