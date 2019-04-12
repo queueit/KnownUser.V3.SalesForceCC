@@ -60,7 +60,7 @@ exports.httpContextProvider = function() {
             return {
             	setCookie : function(cookieName, cookieValue, domain, expir) {
             		
-            		var cookieToAdd = require('dw/web/Cookie').Cookie(cookieName, cookieValue);
+            		var cookieToAdd = require('dw/web/Cookie')(cookieName, cookieValue);
         			cookieToAdd.domain = domain;
         			cookieToAdd.setMaxAge(expir);
         			

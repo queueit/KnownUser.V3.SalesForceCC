@@ -13,7 +13,7 @@
 * For example:
 *
 *-   @input ExampleIn : String This is a sample comment.
-*-   @output ExampleOut : Number
+*   @output Location :  dw.web.URL
 *
 */
 importPackage( dw.system );
@@ -21,8 +21,13 @@ var QueueIt = require('~/cartridge/scripts/QueueIt.js');
 
 function execute( args : PipelineDictionary ) : Number
 {
+	var loc = QueueIt.Start();
 
-	QueueIt.Start();
+	if (loc)
+	{
+		args.Location = loc; 
+		return PIPELET_ERROR;
+	} 
 
    return PIPELET_NEXT;
 }
