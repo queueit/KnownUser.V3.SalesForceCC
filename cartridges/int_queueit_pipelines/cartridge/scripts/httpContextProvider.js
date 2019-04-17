@@ -44,11 +44,10 @@ exports.httpContextProvider = function() {
         				return '';
         			}
         		}, 
-        		getBody: function() 
+        		getRequestBodyAsString: function() 
         		{ 
-        			
-        			if (request.httpParameterMap.requestBodyAsString) { 
-        				return request.httpParameterMap.requestBodyAsString;
+        			if (request.httpParameterMap.pid) { 
+        				return 'pid=' + request.httpParameterMap.pid.toString();
         			}
         			return '';
         		}
@@ -61,7 +60,11 @@ exports.httpContextProvider = function() {
             	setCookie : function(cookieName, cookieValue, domain, expir) {
             		
             		var cookieToAdd = require('dw/web/Cookie')(cookieName, cookieValue);
-        			cookieToAdd.domain = domain;
+            		if (!((domain == null) || (domain == ''))) {
+            			cookieToAdd.domain = domain;
+            		}
+            		cookieToAdd.setPath('/');
+            		
         			cookieToAdd.setMaxAge(expir);
         			
         			response.addHttpCookie(cookieToAdd);

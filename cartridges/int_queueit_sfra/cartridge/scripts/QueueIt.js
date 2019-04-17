@@ -65,13 +65,12 @@ exports.Start = function(configs) {
 					if (validationResult.isAjaxResult) {
 						// need to set the header and send back success
 						session.custom.ajaxredirecturl = validationResult.getAjaxRedirectUrl();
-						var location2 = URLUtils.https('QueueItJson-Show');
-						response.redirect(location2);
 						return;
 						
 					}
 					else 
 					{
+						session.custom.ajaxredirecturl = null;
 						var location = validationResult.redirectUrl; 
 						// redirect
 						response.redirect(location);

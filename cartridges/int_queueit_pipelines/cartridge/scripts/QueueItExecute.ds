@@ -14,6 +14,7 @@
 *
 *-   @input ExampleIn : String This is a sample comment.
 *   @output Location :  dw.web.URL
+*   @output Type : String
 *
 */
 importPackage( dw.system );
@@ -25,7 +26,8 @@ function execute( args : PipelineDictionary ) : Number
 
 	if (loc)
 	{
-		args.Location = loc; 
+		args.Location = loc.location;
+		args.Type = loc.type; 
 		return PIPELET_ERROR;
 	} 
 

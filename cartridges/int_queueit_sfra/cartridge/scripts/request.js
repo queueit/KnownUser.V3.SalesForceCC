@@ -8,8 +8,11 @@ exports.onRequest = function() {
 	if (queueItConfigs) {
 		// NOTE: probably want this to be inclusionary vs exclusionary: only do this logic if 
 		// page show / category show / add to cart Request Prefilter
-		if(request.httpURL.toString().indexOf('__Analytics') >= 0){
-			require('~/cartridge/scripts/QueueIt.js').Start(queueItConfigs);
+		var configs = configs =  'queueItCustomerId' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItCustomerId"] ? sitePrefs.getCustom()["queueItCustomerId"] : null;
+		configs += '|' + 'queueItSecretKey' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItSecretKey"] ? sitePrefs.getCustom()["queueItSecretKey"] : null;
+		
+		if (!(request.httpURL.toString().indexOf('__Analytics') >= 0)){
+			require('~/cartridge/scripts/QueueIt.js').Start(configs);
 		}
 	}
 }

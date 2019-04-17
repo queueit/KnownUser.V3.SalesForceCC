@@ -20,7 +20,14 @@ const QueueIT = require("./queueit_knownuserv3_sdk.js");
  *  
  */
 exports.Start = function() {
-    
+	var sitePrefs = require('dw/system/Site').getCurrent().getPreferences();
+	var queueItConfigs = 'queueItEnabled' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItEnabled"] ? sitePrefs.getCustom()["queueItEnabled"] : null;
+	
+	if (!queueItConfigs)
+	{
+		return;
+	}
+  
 	var prov = httpCtx.httpContextProvider();
 	
 	var requestUrl = prov.getHttpRequest().getAbsoluteUri();
@@ -44,25 +51,8 @@ exports.Start = function() {
 	
 	if (integrationsConfigString != "")
 	{
-		var queueItEnabled = false; 
-		if ('queueItEnabled' in sitePrefs.getCustom()) {
-			queueItEnabled = sitePrefs.getCustom()["queueItEnabled"];
-		}
-		if (!queueItEnabled)
-		{
-			return;
-		}
-		
-		var customerId = '';
-		if ('queueItCustomerId' in sitePrefs.getCustom()) {
-			customerId = sitePrefs.getCustom()["queueItCustomerId"]; // Your Queue-it customer ID
-		}
-		
-		var secretKey = '';
-		if ('queueItSecretKey' in sitePrefs.getCustom()) {
-			secretKey = sitePrefs.getCustom()["queueItSecretKey"]; // Your 72 char secret key as specified in Go Queue-it self-service platform
-		}
-		
+		var customerId =   'queueItCustomerId' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItCustomerId"] ? sitePrefs.getCustom()["queueItCustomerId"] : null;
+		var secretKey = 'queueItSecretKey' in sitePrefs.getCustom() && sitePrefs.getCustom()["queueItSecretKey"] ? sitePrefs.getCustom()["queueItSecretKey"] : null;
 		
 		if (customerId != '' && secretKey != '')
 		{
@@ -87,22 +77,25 @@ exports.Start = function() {
 					      customerId, secretKey, prov);
 			
 				if (validationResult.doRedirect()) {
-
+					var returnVal = {};
+					
 					// handle ajax
 					if (validationResult.isAjaxResult) {
 						// need to set the header and send back success
 						session.custom.ajaxredirecturl = validationResult.getAjaxRedirectUrl();
-						var location2 = URLUtils.https('QueueItJson-Show');
-						response.redirect(location2);
-						return location2;
+						returnVal.type = 'ajax';
+						returnVal.location = null;
+						
+						return returnVal;
 						
 					}
 					else 
 					{
 						var location = validationResult.redirectUrl; 
 						// redirect
-						response.redirect(location);
-						return location;
+						returnVal.type ='redirect';
+						returnVal.location = location;
+						return returnVal;
 						
 					}
 				}

@@ -16,21 +16,52 @@
           <config-property key="ScriptFile" value="QueueItExecute.ds"/>
           <key-binding alias="Logger" key="ScriptLog"/>
           <key-binding alias="Location" key="Location"/>
+          <key-binding alias="QueueItType" key="Type"/>
         </pipelet-node>
         <node-display x="0" y="1"/>
         <branch basename="b2" source-connector="error">
-          <transition target-connector="in">
-            <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
-            </transition-display>
-          </transition>
+          <transition target-connector="in"/>
           <segment>
             <node>
+              <decision-node condition-key="QueueItType == 'redirect'" condition-operator="expr"/>
+              <node-display x="1" y="1"/>
+              <branch basename="b2" source-connector="yes">
+                <transition target-connector="in">
+                  <transition-display>
+                    <bend-point relative-to="target" x="0" y="-1"/>
+                  </transition-display>
+                </transition>
+                <segment>
+                  <node>
+                    <interaction-node transaction-required="false">
+                      <template buffered="true" dynamic="false" name="util/redirectpermanent"/>
+                    </interaction-node>
+                    <node-display x="0" y="2"/>
+                  </node>
+                </segment>
+              </branch>
+            </node>
+            <simple-transition>
+              <transition-display>
+                <bend-point relative-to="source" x="2" y="0"/>
+                <bend-point relative-to="target" x="0" y="-1"/>
+              </transition-display>
+            </simple-transition>
+            <node>
+              <pipelet-node pipelet-name="Eval" pipelet-set-identifier="bc_api">
+                <config-property key="OnError" value="null"/>
+                <config-property key="Transactional" value="false"/>
+                <config-property key="Expression" value="response.addHttpHeader('X-SF-CC-QUEUEIT', session.custom.ajaxredirecturl );"/>
+                <key-binding alias="Result" key="Result"/>
+              </pipelet-node>
+              <node-display x="1" y="1"/>
+            </node>
+            <simple-transition/>
+            <node>
               <interaction-node transaction-required="false">
-                <template buffered="true" dynamic="false" name="util/redirectpermanent"/>
+                <template buffered="true" dynamic="false" name="queueit/queueiterror"/>
               </interaction-node>
-              <node-display x="1" y="2"/>
+              <node-display x="0" y="1"/>
             </node>
           </segment>
         </branch>
