@@ -88,6 +88,7 @@ exports.Start = function() {
 					}
 					else 
 					{
+						session.custom.ajaxredirecturl = null;
 						var location = validationResult.redirectUrl; 
 						// redirect
 						response.redirect(location);
@@ -97,6 +98,7 @@ exports.Start = function() {
 				}
 				else 
 				{
+					session.custom.ajaxredirecturl = null;
 					if (requestUrl.toString() !== requestUrlWithoutToken && validationResult.actionType) {
 				        resonse.redirect(requestUrlWithoutToken);
 				    } else {
@@ -108,6 +110,7 @@ exports.Start = function() {
 		}
 		else
 		{
+			session.custom.ajaxredirecturl = null;
 			return; 
 		}
 		

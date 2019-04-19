@@ -83,6 +83,7 @@ exports.Start = function(configs) {
 		}
 		else
 		{
+			session.custom.ajaxredirecturl = null;
 			return; 
 		}
 		
