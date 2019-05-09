@@ -68,9 +68,9 @@ exports.httpContextProvider = function() {
             		if (!((domain == null) || (domain == ''))) {
             			cookieToAdd.domain = domain;
             		}
-            		cookieToAdd.setPath('/');
-            		
-        			cookieToAdd.setMaxAge(expir);
+            		cookieToAdd.setPath('/');          		
+					var maxAge = parseInt(expir) - Math.floor( new Date().getTime() / 1000  );
+					cookieToAdd.setMaxAge(maxAge);
         			
         			response.addHttpCookie(cookieToAdd);
         			return '';
