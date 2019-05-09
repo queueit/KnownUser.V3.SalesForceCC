@@ -1,0 +1,12 @@
+{
+  "name": "knownuser.v3.salesforcecc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "devDependencies": {
+    "sgmf-scripts": "^2.3.0"
+  },
+  "scripts": {
+    "watch": "sgmf-scripts --watch"
+  }
+}
