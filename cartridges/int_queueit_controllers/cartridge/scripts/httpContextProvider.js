@@ -12,7 +12,12 @@ exports.httpContextProvider = function() {
         getHttpRequest: function() {
             return {
                 getAbsoluteUri: function() { 
-                    return request.httpURL; 
+					const protocol = this.getHeader('x-forwarded-proto') || this.getHeader('x-is-server_port_secure') === "1" ? 'https' : 'http';
+					let url = protocol  + '://' + this.getHeader('x-is-host') + this.getHeader('x-is-path_translated');
+					if (request.httpQueryString) {
+						url = url + '?' + request.httpQueryString;
+					}
+					return url;
                 },
                 getUserAgent: function() { 
                 	 request.httpUserAgent;
