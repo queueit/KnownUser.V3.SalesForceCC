@@ -13,7 +13,7 @@ var httpCtx = require('./httpContextProvider.js');
 var URLUtils = require('dw/web/URLUtils');
 
 const QueueIT = require("./queueit_knownuserv3_sdk.js"); 
-
+const SALESFORCE_SDK_VERSION = "1.0.0";
 /**
  * Implements the Queue It process
  * Checks for custom site preferences, matches to request, redirects to queue it if appropriate. 
@@ -82,7 +82,7 @@ exports.Start = function() {
 					// handle ajax
 					if (validationResult.isAjaxResult) {
 						// need to set the header and send back success
-						session.custom.ajaxredirecturl = validationResult.getAjaxRedirectUrl();
+						session.custom.ajaxredirecturl = addKUPlatformVersion(validationResult.getAjaxRedirectUrl());
 						returnVal.type = 'ajax';
 						returnVal.location = null;
 						
@@ -92,10 +92,9 @@ exports.Start = function() {
 					else 
 					{
 						session.custom.ajaxredirecturl = null;
-						var location = validationResult.redirectUrl; 
 						// redirect
 						returnVal.type ='redirect';
-						returnVal.location = location;
+						returnVal.location = addKUPlatformVersion(validationResult.redirectUrl);
 						return returnVal;
 						
 					}
@@ -137,3 +136,7 @@ function configureKnownUserHashing() {
 }
 
 
+function addKUPlatformVersion(queueRedirectUrl)
+{
+	return  queueRedirectUrl+ "&kupver=" + SALESFORCE_SDK_VERSION;
+}
