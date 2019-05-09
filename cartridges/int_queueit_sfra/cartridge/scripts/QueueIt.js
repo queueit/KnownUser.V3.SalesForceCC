@@ -47,7 +47,7 @@ exports.Start = function(configs) {
 				
 				var knownUser = QueueIT.KnownUserV3.SDK.KnownUser;
 				
-				var requestUrlWithoutToken : string = requestUrl.toString();
+				var requestUrlWithoutToken  = requestUrl.toString();
 				requestUrlWithoutToken = requestUrlWithoutToken.replace(new RegExp("([\?&])(" + knownUser.QueueITTokenKey + "=[^&]*)", 'i'), "");
 				
 				var queueitToken = '';
@@ -76,6 +76,16 @@ exports.Start = function(configs) {
 						response.redirect(location);
 						return;
 					}
+				}
+				else
+				{
+					session.custom.ajaxredirecturl = null;
+					if (requestUrl.toString() !== requestUrlWithoutToken && validationResult.actionType) {
+								response.redirect(requestUrlWithoutToken);
+								return;
+				    } else {
+				    	return;
+				    }	
 				}
 				
 			}
