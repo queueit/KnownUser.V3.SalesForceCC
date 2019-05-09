@@ -64,7 +64,7 @@ exports.httpContextProvider = function() {
             return {
             	setCookie : function(cookieName, cookieValue, domain, expir) {
             		
-            		var cookieToAdd = require('dw/web/Cookie')(cookieName, cookieValue);
+            		var cookieToAdd = require('dw/web/Cookie')(cookieName, encodeURIComponent( cookieValue));
             		if (!((domain == null) || (domain == ''))) {
             			cookieToAdd.setDomain(domain);
             		}
