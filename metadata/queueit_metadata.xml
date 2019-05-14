@@ -51,7 +51,7 @@
             <attribute-definition attribute-id="queueitdata">
                 <display-name xml:lang="x-default">Queue It Data</display-name>
                 <description xml:lang="x-default">From the Go Platform, use the go.queue-it.net/integration/overview to download the json. Use this field to store the json data.</description>
-                <type>string</type>
+                <type>text</type>
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
