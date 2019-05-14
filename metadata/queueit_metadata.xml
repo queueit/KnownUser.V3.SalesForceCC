@@ -55,7 +55,6 @@
                 <localizable-flag>false</localizable-flag>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
-                <min-length>0</min-length>
             </attribute-definition>
         </attribute-definitions>
         <group-definitions>
