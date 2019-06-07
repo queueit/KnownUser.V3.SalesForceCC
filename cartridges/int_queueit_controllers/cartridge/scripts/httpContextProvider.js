@@ -20,7 +20,7 @@ exports.httpContextProvider = function() {
 					return url;
                 },
                 getUserAgent: function() { 
-                	 request.httpUserAgent;
+                	 return request.httpUserAgent;
                 },
                 getHeader: function (name)
                 {
