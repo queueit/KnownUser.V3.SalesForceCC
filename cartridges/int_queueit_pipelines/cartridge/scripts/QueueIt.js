@@ -138,5 +138,5 @@ function configureKnownUserHashing() {
 
 function addKUPlatformVersion(queueRedirectUrl)
 {
-	return  queueRedirectUrl+ "&kupver=" + SALESFORCE_SDK_VERSION;
+	return  queueRedirectUrl+ "&kupver=salesforce-" + SALESFORCE_SDK_VERSION;
 }
